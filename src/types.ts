@@ -13,3 +13,6 @@ export type CatData = {
   width: number;
   height: number;
 };
+
+export type GameCard = { id: string; url: string };
+export type CardDeck = Array<GameCard>;

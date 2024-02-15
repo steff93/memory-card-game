@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../../config";
 import { getApiData } from "../../dataHelpers";
+import { cardsConstructor } from "../../gameHelpers";
 import { CatData } from "../../types";
+import Cards from "../Cards/Cards";
+import Score from "../Score/Score";
 import "./Board.scss";
 
-// default component, keep all score state
 const Board = () => {
   const [cats, setCats] = useState<CatData[]>([]);
 
@@ -12,34 +14,20 @@ const Board = () => {
     getApiData(API_URL).then((response: CatData[]) => {
       setCats(response);
     });
-  }, [cats]);
+  }, []);
 
-  /**
-   * Construct a 24-card deck based on catData
-   */
-  const cardsConstructor = (catsObject: CatData[]) => {
-    const cards: { id: string; url: string }[] = [];
+  const cardDeck = cardsConstructor(cats);
 
-    catsObject.forEach((cat) => {
-      cards.push({
-        id: cat.id,
-        url: cat.url,
-      });
-    });
-
-    return [...cards, ...cards];
-  };
-
-  console.log(cardsConstructor(cats));
-
-  // get 12 cats from api
-  // duplicate it, so each entry is added two times
-  // shuffle cards
-
-  // children
-  // CARDS
-  // SCORE
-  return <div></div>;
+  return (
+    <div className="game-board">
+      {cats.length && (
+        <>
+          <Cards cards={cardDeck} />
+          <Score pairs={0} moves={0} />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Board;

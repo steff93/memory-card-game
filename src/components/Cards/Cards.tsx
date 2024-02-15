@@ -1,16 +1,25 @@
+import { CardDeck } from "../../types";
+import Card from "../Card/Card";
 import "./Cards.scss";
 
-// CARDS DECK
-// ACCEPT CARDS object prop
-
-// layout the cards on the board
-
 interface CardsProps {
-  Cards: [];
+  cards: CardDeck;
 }
 
-const Cards = (props: CardsProps) => {
-  return <div></div>;
+const Cards = ({ cards }: CardsProps) => {
+  return (
+    <div className="game-board__cards">
+      {cards.map((card) => (
+        <Card
+          key={card.id}
+          card={card}
+          disabled={false}
+          selected={false}
+          boardDisabled={false}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default Cards;

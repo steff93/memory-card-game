@@ -1,14 +1,19 @@
+import { GameCard } from "../../types";
 import "./Card.scss";
-// Render a card
 
 interface CardProps {
+  card: GameCard;
   selected: boolean;
   disabled: boolean;
   boardDisabled: boolean;
 }
 
-const Card = (props: CardProps) => {
-  return <div></div>;
+const Card = ({ card, selected, disabled, boardDisabled }: CardProps) => {
+  return (
+    <div className="card">
+      <img src={card.url} />
+    </div>
+  );
 };
 
 export default Card;
