@@ -9,9 +9,9 @@ interface CardsProps {
 const Cards = ({ cards }: CardsProps) => {
   return (
     <div className="game-board__cards">
-      {cards.map((card) => (
+      {cards.map((card, index) => (
         <Card
-          key={card.id}
+          key={index}
           card={card}
           disabled={false}
           selected={false}
