@@ -1,5 +1,7 @@
 .game-board__cards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(4, calc(25% - 4rem / 2));
   width: 85%;
+  grid-gap: 2rem;
 }
