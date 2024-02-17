@@ -35,7 +35,8 @@
     border-radius: inherit;
   }
 
-  &--disabled {
+  &--disabled,
+  &.flipped {
     pointer-events: none;
 
     .card__inner {

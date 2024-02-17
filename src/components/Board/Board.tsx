@@ -30,9 +30,11 @@ const Board = () => {
   };
 
   const handleRemoveSelection = (selection: string[]) => {
-    setCardsWithPar((prev) => {
-      return [...prev, ...selection];
-    });
+    setTimeout(() => {
+      setCardsWithPar((prev) => {
+        return [...prev, ...selection];
+      });
+    }, 700);
   };
 
   const handleIncrementPair = () => {
@@ -46,6 +48,12 @@ const Board = () => {
     setCurrentMoves((prev) => prev + 1);
 
     handleResetSelection();
+  };
+
+  const handleFinishGame = () => {
+    if (cardsWithPair.length === 20) {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -68,6 +76,11 @@ const Board = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCardSelection]);
+
+  useEffect(() => {
+    handleFinishGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cardsWithPair]);
 
   return (
     <div className="game-board">
