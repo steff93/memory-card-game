@@ -4,9 +4,15 @@ import "./Cards.scss";
 
 interface CardsProps {
   cards: CardDeck;
+  pushCardId: (id: string) => void;
 }
 
-const Cards = ({ cards }: CardsProps) => {
+const Cards = ({ cards, pushCardId }: CardsProps) => {
+  const handleCardFlip = (cardId: string) => {
+    // push cardId to activeSelection
+    pushCardId(cardId);
+  };
+
   return (
     <div className="game-board__cards">
       {cards.map((card, index) => (
@@ -16,6 +22,7 @@ const Cards = ({ cards }: CardsProps) => {
           disabled={false}
           selected={false}
           boardDisabled={false}
+          onCardFlip={handleCardFlip}
         />
       ))}
     </div>

@@ -8,13 +8,22 @@ interface CardProps {
   selected: boolean;
   disabled: boolean;
   boardDisabled: boolean;
+  onCardFlip: (cardId: string) => void;
 }
 
-const Card = ({ card, selected, disabled, boardDisabled }: CardProps) => {
+const Card = ({
+  card,
+  selected,
+  disabled,
+  boardDisabled,
+  onCardFlip,
+}: CardProps) => {
   const [isSelected, setIsSelected] = useState(false);
 
   const handleCardFlip = () => {
     setIsSelected(!isSelected);
+
+    onCardFlip(card.id);
   };
 
   return (
