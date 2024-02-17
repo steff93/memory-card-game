@@ -1,24 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MysteryCat from "../../assets/card-front.jpeg";
 import { GameCard } from "../../types";
 import "./Card.scss";
 
 interface CardProps {
   card: GameCard;
+  cardsToRemove: string[];
   selected: boolean;
   disabled: boolean;
   boardDisabled: boolean;
+  resetSelection: boolean;
+
   onCardFlip: (cardId: string) => void;
 }
 
 const Card = ({
   card,
-  selected,
-  disabled,
-  boardDisabled,
+  resetSelection,
+  cardsToRemove,
   onCardFlip,
 }: CardProps) => {
   const [isSelected, setIsSelected] = useState(false);
+  const showCard = !cardsToRemove.includes(card.id);
 
   const handleCardFlip = () => {
     setIsSelected(!isSelected);
@@ -26,15 +29,24 @@ const Card = ({
     onCardFlip(card.id);
   };
 
-  console.log(selected, disabled, boardDisabled);
+  useEffect(() => {
+    if (resetSelection) setIsSelected(false);
+  }, [resetSelection]);
+
   return (
     <div
-      className={`card ${isSelected ? "flipped" : ""}`}
+      className={`card ${isSelected ? "flipped" : ""} ${
+        !showCard ? "card--disabled" : ""
+      }`}
       onClick={handleCardFlip}
     >
       <div className="card__inner">
-        <img className="card__front" src={MysteryCat} />
-        <img className="card__back" src={card.url} />
+        {showCard && (
+          <>
+            <img className="card__front" src={MysteryCat} />
+            <img className="card__back" src={card.url} />
+          </>
+        )}
       </div>
     </div>
   );

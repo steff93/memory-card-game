@@ -4,10 +4,17 @@ import "./Cards.scss";
 
 interface CardsProps {
   cards: CardDeck;
+  cardsToRemove: string[];
+  resetSelection: boolean;
   pushCardId: (id: string) => void;
 }
 
-const Cards = ({ cards, pushCardId }: CardsProps) => {
+const Cards = ({
+  cards,
+  pushCardId,
+  resetSelection,
+  cardsToRemove,
+}: CardsProps) => {
   const handleCardFlip = (cardId: string) => {
     // push cardId to activeSelection
     pushCardId(cardId);
@@ -22,6 +29,8 @@ const Cards = ({ cards, pushCardId }: CardsProps) => {
           disabled={false}
           selected={false}
           boardDisabled={false}
+          cardsToRemove={cardsToRemove}
+          resetSelection={resetSelection}
           onCardFlip={handleCardFlip}
         />
       ))}

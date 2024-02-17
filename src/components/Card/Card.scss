@@ -34,4 +34,12 @@
     object-fit: cover;
     border-radius: inherit;
   }
+
+  &--disabled {
+    pointer-events: none;
+
+    .card__inner {
+      background-color: inherit;
+    }
+  }
 }

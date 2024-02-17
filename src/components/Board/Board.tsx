@@ -9,16 +9,43 @@ import "./Board.scss";
 
 const Board = () => {
   const [cats, setCats] = useState<CatData[]>([]);
-  const cardDeck = cardsConstructor(cats);
-
   const [activeCardSelection, setActiveCardSelection] = useState<Array<string>>(
     []
   );
+  const [cardsWithPair, setCardsWithPar] = useState<Array<string>>([]);
   const [currentPairs, setCurrentPairs] = useState(0);
   const [currentMoves, setCurrentMoves] = useState(0);
+  const [resetSelection, setResetSelection] = useState(false);
+
+  const cardDeck = cardsConstructor(cats);
 
   const handleCardPush = (id: string) => {
     setActiveCardSelection((prev) => [...prev, id]);
+  };
+
+  const handleResetSelection = () => {
+    setTimeout(() => {
+      setResetSelection(true);
+    }, 1000);
+  };
+
+  const handleRemoveSelection = (selection: string[]) => {
+    setCardsWithPar((prev) => {
+      return [...prev, ...selection];
+    });
+  };
+
+  const handleIncrementPair = () => {
+    setCurrentPairs((prev) => prev + 1);
+    setCurrentMoves((prev) => prev + 1);
+
+    handleRemoveSelection(activeCardSelection);
+  };
+
+  const handleIncrementMove = () => {
+    setCurrentMoves((prev) => prev + 1);
+
+    handleResetSelection();
   };
 
   useEffect(() => {
@@ -30,24 +57,28 @@ const Board = () => {
   useEffect(() => {
     if (activeCardSelection.length === 2) {
       if (activeCardSelection[0] === activeCardSelection[1]) {
-        setCurrentPairs((prev) => prev + 1);
-        setCurrentMoves((prev) => prev + 1);
-        // remove these cards from deck
-        // onPairFound
+        handleIncrementPair();
       } else {
-        setCurrentMoves((prev) => prev + 1);
-        // reset selectedCards
+        handleIncrementMove();
       }
 
       setActiveCardSelection([]);
+    } else {
+      setResetSelection(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCardSelection]);
 
   return (
     <div className="game-board">
       {cats.length ? (
         <>
-          <Cards cards={cardDeck} pushCardId={handleCardPush} />
+          <Cards
+            cards={cardDeck}
+            cardsToRemove={cardsWithPair}
+            pushCardId={handleCardPush}
+            resetSelection={resetSelection}
+          />
           <Score pairs={currentPairs} moves={currentMoves} />
         </>
       ) : null}
