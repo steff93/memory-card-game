@@ -18,7 +18,7 @@ const Board = () => {
   const [activeCardSelection, setActiveCardSelection] = useState<Array<string>>(
     []
   );
-  const [cardsWithPair, setCardsWithPar] = useState<Array<string>>([]);
+  const [cardsWithPair, setCardsWithPair] = useState<Array<string>>([]);
   const [currentPairs, setCurrentPairs] = useState(0);
   const [currentMoves, setCurrentMoves] = useState(0);
   const [resetSelection, setResetSelection] = useState(false);
@@ -45,7 +45,7 @@ const Board = () => {
 
   const handleRemoveSelection = (selection: string[]) => {
     setTimeout(() => {
-      setCardsWithPar((prev) => {
+      setCardsWithPair((prev) => {
         return [...prev, ...selection];
       });
       setIsBoardDisabled(false);
@@ -81,7 +81,7 @@ const Board = () => {
   };
 
   const handleRestartGame = () => {
-    setCardsWithPar([]);
+    setCardsWithPair([]);
     setCurrentMoves(0);
     setCurrentPairs(0);
     setShowBoard(true);
