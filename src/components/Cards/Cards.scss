@@ -4,4 +4,8 @@
   grid-template-rows: repeat(4, calc(25% - 4rem / 2));
   width: 85%;
   grid-gap: 2rem;
+
+  &--disabled {
+    pointer-events: none;
+  }
 }

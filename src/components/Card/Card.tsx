@@ -8,9 +8,7 @@ interface CardProps {
   cardsToRemove: string[];
   selected: boolean;
   disabled: boolean;
-  boardDisabled: boolean;
   resetSelection: boolean;
-
   onCardFlip: (cardId: string) => void;
 }
 

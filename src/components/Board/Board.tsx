@@ -16,6 +16,7 @@ const Board = () => {
   const [currentPairs, setCurrentPairs] = useState(0);
   const [currentMoves, setCurrentMoves] = useState(0);
   const [resetSelection, setResetSelection] = useState(false);
+  const [isBoardDisabled, setIsBoardDisabled] = useState(false);
 
   const cardDeck = cardsConstructor(cats);
 
@@ -26,6 +27,7 @@ const Board = () => {
   const handleResetSelection = () => {
     setTimeout(() => {
       setResetSelection(true);
+      setIsBoardDisabled(false);
     }, 1000);
   };
 
@@ -34,6 +36,7 @@ const Board = () => {
       setCardsWithPar((prev) => {
         return [...prev, ...selection];
       });
+      setIsBoardDisabled(false);
     }, 700);
   };
 
@@ -64,6 +67,8 @@ const Board = () => {
 
   useEffect(() => {
     if (activeCardSelection.length === 2) {
+      setIsBoardDisabled(true);
+
       if (activeCardSelection[0] === activeCardSelection[1]) {
         handleIncrementPair();
       } else {
@@ -89,6 +94,7 @@ const Board = () => {
           <Cards
             cards={cardDeck}
             cardsToRemove={cardsWithPair}
+            boardDisabled={isBoardDisabled}
             pushCardId={handleCardPush}
             resetSelection={resetSelection}
           />
