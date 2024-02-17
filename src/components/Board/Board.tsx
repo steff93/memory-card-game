@@ -4,10 +4,15 @@ import { getApiData } from "../../dataHelpers";
 import { cardsConstructor } from "../../gameHelpers";
 import { CatData } from "../../types";
 import Cards from "../Cards/Cards";
+import IntroModal from "../IntroModal/IntroModal";
 import Score from "../Score/Score";
 import "./Board.scss";
 
 const Board = () => {
+  const [showBoard, setShowBoard] = useState(false);
+  const [introModalType, setIntroModalType] = useState<"start" | "finish">(
+    "start"
+  );
   const [cats, setCats] = useState<CatData[]>([]);
   const [activeCardSelection, setActiveCardSelection] = useState<Array<string>>(
     []
@@ -53,10 +58,22 @@ const Board = () => {
     handleResetSelection();
   };
 
+  const handleStartGame = () => {
+    if (introModalType === "finish") {
+      handleRestartGame();
+    }
+    setShowBoard(true);
+  };
+
   const handleFinishGame = () => {
     if (cardsWithPair.length === 20) {
-      window.location.reload();
+      setShowBoard(false);
+      setIntroModalType("finish");
     }
+  };
+
+  const handleRestartGame = () => {
+    // do something
   };
 
   useEffect(() => {
@@ -87,7 +104,7 @@ const Board = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardsWithPair]);
 
-  return (
+  return showBoard ? (
     <div className="game-board">
       {cats.length ? (
         <>
@@ -102,6 +119,12 @@ const Board = () => {
         </>
       ) : null}
     </div>
+  ) : (
+    <IntroModal
+      handleStartGame={handleStartGame}
+      type={introModalType}
+      totalMoves={currentMoves}
+    />
   );
 };
 
