@@ -16,3 +16,16 @@ export type CatData = {
 
 export type GameCard = { id: string; url: string };
 export type CardDeck = Array<GameCard>;
+
+export type Player = "player1" | "player2";
+
+export type GameScore = {
+  player1: {
+    readonly pairs: number;
+    readonly moves: number;
+  };
+  player2: {
+    readonly pairs: number;
+    readonly moves: number;
+  };
+};

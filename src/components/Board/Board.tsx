@@ -3,7 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { API_URL } from "../../config";
 import { getApiData } from "../../dataHelpers";
 import { cardsConstructor } from "../../gameHelpers";
-import { CardDeck, CatData } from "../../types";
+import { CardDeck, CatData, Player } from "../../types";
+import useGameScore from "../../useGameScore";
 import Cards from "../Cards/Cards";
 import IntroModal from "../IntroModal/IntroModal";
 import Score from "../Score/Score";
@@ -19,10 +20,11 @@ const Board = () => {
     []
   );
   const [cardsWithPair, setCardsWithPair] = useState<Array<string>>([]);
-  const [currentPairs, setCurrentPairs] = useState(0);
-  const [currentMoves, setCurrentMoves] = useState(0);
   const [resetSelection, setResetSelection] = useState(false);
   const [isBoardDisabled, setIsBoardDisabled] = useState(false);
+
+  const { gameScore, dispatch } = useGameScore();
+  const [activePlayer, setaActivePlayer] = useState<Player>("player1");
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cardDeck = useMemo(() => cardsConstructor(cats), [cats, showBoard]);
@@ -31,6 +33,17 @@ const Board = () => {
   const shuffleCards = useCallback(() => {
     shuffledDeck.current = shuffle(cardDeck);
   }, [cats]);
+
+  const handlePlayerSwitch = () => {
+    if (activePlayer === "player1") {
+      setaActivePlayer("player2");
+    } else {
+      setaActivePlayer("player1");
+    }
+  };
+
+  const dispatchType =
+    activePlayer === "player1" ? "update_player_one" : "update_player_two";
 
   const handleCardPush = (id: string) => {
     setActiveCardSelection((prev) => [...prev, id]);
@@ -53,16 +66,27 @@ const Board = () => {
   };
 
   const handleIncrementPair = () => {
-    setCurrentPairs((prev) => prev + 1);
-    setCurrentMoves((prev) => prev + 1);
+    dispatch({
+      type: dispatchType,
+      payload: {
+        pairs: gameScore[activePlayer].pairs + 1,
+        moves: gameScore[activePlayer].moves + 1,
+      },
+    });
 
     handleRemoveSelection(activeCardSelection);
   };
 
   const handleIncrementMove = () => {
-    setCurrentMoves((prev) => prev + 1);
+    dispatch({
+      type: dispatchType,
+      payload: {
+        moves: gameScore[activePlayer].moves + 1,
+      },
+    });
 
     handleResetSelection();
+    handlePlayerSwitch();
   };
 
   const handleStartGame = () => {
@@ -81,11 +105,10 @@ const Board = () => {
   };
 
   const handleRestartGame = () => {
-    setCardsWithPair([]);
-    setCurrentMoves(0);
-    setCurrentPairs(0);
-    setShowBoard(true);
+    dispatch({ type: "reset" });
 
+    setCardsWithPair([]);
+    setShowBoard(true);
     shuffleCards();
   };
 
@@ -128,7 +151,7 @@ const Board = () => {
             pushCardId={handleCardPush}
             resetSelection={resetSelection}
           />
-          <Score pairs={currentPairs} moves={currentMoves} />
+          <Score score={gameScore} />
         </>
       ) : null}
     </div>
@@ -136,7 +159,7 @@ const Board = () => {
     <IntroModal
       handleStartGame={handleStartGame}
       type={introModalType}
-      totalMoves={currentMoves}
+      totalMoves={gameScore.player1.moves}
     />
   );
 };
