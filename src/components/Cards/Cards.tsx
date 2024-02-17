@@ -32,8 +32,6 @@ const Cards = ({
         <Card
           key={index}
           card={card}
-          disabled={false}
-          selected={false}
           cardsToRemove={cardsToRemove}
           resetSelection={resetSelection}
           onCardFlip={handleCardFlip}

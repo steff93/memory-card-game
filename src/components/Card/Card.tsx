@@ -6,8 +6,6 @@ import "./Card.scss";
 interface CardProps {
   card: GameCard;
   cardsToRemove: string[];
-  selected: boolean;
-  disabled: boolean;
   resetSelection: boolean;
   onCardFlip: (cardId: string) => void;
 }
