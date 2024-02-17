@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import shuffle from "lodash.shuffle";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { API_URL } from "../../config";
 import { getApiData } from "../../dataHelpers";
 import { cardsConstructor } from "../../gameHelpers";
-import { CatData } from "../../types";
+import { CardDeck, CatData } from "../../types";
 import Cards from "../Cards/Cards";
 import IntroModal from "../IntroModal/IntroModal";
 import Score from "../Score/Score";
@@ -23,7 +24,13 @@ const Board = () => {
   const [resetSelection, setResetSelection] = useState(false);
   const [isBoardDisabled, setIsBoardDisabled] = useState(false);
 
-  const cardDeck = cardsConstructor(cats);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const cardDeck = useMemo(() => cardsConstructor(cats), [cats, showBoard]);
+  const shuffledDeck = useRef<CardDeck>([]);
+
+  const shuffleCards = useCallback(() => {
+    shuffledDeck.current = shuffle(cardDeck);
+  }, [cats]);
 
   const handleCardPush = (id: string) => {
     setActiveCardSelection((prev) => [...prev, id]);
@@ -62,6 +69,7 @@ const Board = () => {
     if (introModalType === "finish") {
       handleRestartGame();
     }
+    shuffleCards();
     setShowBoard(true);
   };
 
@@ -73,14 +81,19 @@ const Board = () => {
   };
 
   const handleRestartGame = () => {
-    // do something
+    setCardsWithPar([]);
+    setCurrentMoves(0);
+    setCurrentPairs(0);
+    setShowBoard(true);
+
+    shuffleCards();
   };
 
   useEffect(() => {
     getApiData(API_URL).then((response: CatData[]) => {
       setCats(response);
     });
-  }, []);
+  }, [showBoard]);
 
   useEffect(() => {
     if (activeCardSelection.length === 2) {
@@ -109,7 +122,7 @@ const Board = () => {
       {cats.length ? (
         <>
           <Cards
-            cards={cardDeck}
+            cards={shuffledDeck.current}
             cardsToRemove={cardsWithPair}
             boardDisabled={isBoardDisabled}
             pushCardId={handleCardPush}

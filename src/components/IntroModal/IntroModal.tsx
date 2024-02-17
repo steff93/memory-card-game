@@ -18,7 +18,7 @@ const IntroModal = ({
         </button>
       ) : (
         <>
-          <div className="game-moves"> Total Moves {totalMoves}</div>
+          <div className="game-moves"> Total Moves: {totalMoves}</div>
           <button className="restart-game" onClick={handleStartGame}>
             Restart
           </button>

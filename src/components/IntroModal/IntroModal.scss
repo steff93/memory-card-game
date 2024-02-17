@@ -1,0 +1,10 @@
+.intro-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .game-moves {
+    margin-right: 50px;
+    text-transform: uppercase;
+  }
+}
