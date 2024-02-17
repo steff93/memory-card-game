@@ -20,12 +20,12 @@ const Board = () => {
 
   return (
     <div className="game-board">
-      {cats.length && (
+      {cats.length ? (
         <>
           <Cards cards={cardDeck} />
           <Score pairs={0} moves={0} />
         </>
-      )}
+      ) : null}
     </div>
   );
 };
