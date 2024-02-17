@@ -26,6 +26,7 @@ const Card = ({
     onCardFlip(card.id);
   };
 
+  console.log(selected, disabled, boardDisabled);
   return (
     <div
       className={`card ${isSelected ? "flipped" : ""}`}
