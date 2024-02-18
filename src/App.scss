@@ -5,4 +5,17 @@
   padding: 2rem;
   padding-right: 0;
   text-align: center;
+
+  .mobile-view {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .intro-modal {
+      display: none;
+    }
+    .mobile-view {
+      display: block;
+    }
+  }
 }
