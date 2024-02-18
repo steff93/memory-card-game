@@ -56,6 +56,10 @@ const Board = () => {
     setTimeout(() => {
       setResetSelection(true);
       setIsBoardDisabled(false);
+
+      if (gameType === "two-player") {
+        handlePlayerSwitch();
+      }
     }, 1000);
   };
 
@@ -89,10 +93,6 @@ const Board = () => {
     });
 
     handleResetSelection();
-
-    if (gameType === "two-player") {
-      handlePlayerSwitch();
-    }
   };
 
   const handleStartGame = (gameType: GameType) => {
