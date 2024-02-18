@@ -11,7 +11,8 @@
   }
 
   @media (max-width: 767px) {
-    .intro-modal {
+    .intro-modal,
+    .game-board {
       display: none;
     }
     .mobile-view {
