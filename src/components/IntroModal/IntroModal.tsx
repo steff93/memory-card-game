@@ -1,9 +1,10 @@
+import { GameType } from "../../types";
 import "./IntroModal.scss";
 
 interface IntroModalProps {
   type?: "start" | "finish";
   totalMoves?: number;
-  handleStartGame: () => void;
+  handleStartGame: (gameType: GameType) => void;
 }
 const IntroModal = ({
   type = "start",
@@ -13,13 +14,27 @@ const IntroModal = ({
   return (
     <div className="intro-modal">
       {type === "start" ? (
-        <button className="start-game" onClick={handleStartGame}>
-          Start Game
-        </button>
+        <>
+          <button
+            className="start-game"
+            onClick={() => handleStartGame("single")}
+          >
+            Start Single Player Game
+          </button>
+          <button
+            className="start-game"
+            onClick={() => handleStartGame("two-player")}
+          >
+            Start Two Player Game
+          </button>
+        </>
       ) : (
         <>
           <div className="game-moves"> Total Moves: {totalMoves}</div>
-          <button className="restart-game" onClick={handleStartGame}>
+          <button
+            className="restart-game"
+            onClick={() => handleStartGame("single")}
+          >
             Restart
           </button>
         </>

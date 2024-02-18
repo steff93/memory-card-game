@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { API_URL } from "../../config";
 import { getApiData } from "../../dataHelpers";
 import { cardsConstructor } from "../../gameHelpers";
-import { CardDeck, CatData, Player } from "../../types";
+import { CardDeck, CatData, GameType, Player } from "../../types";
 import useGameScore from "../../useGameScore";
 import Cards from "../Cards/Cards";
 import IntroModal from "../IntroModal/IntroModal";
@@ -11,10 +11,14 @@ import Score from "../Score/Score";
 import "./Board.scss";
 
 const Board = () => {
+  const [gameType, setGameType] = useState<GameType>("single");
   const [showBoard, setShowBoard] = useState(false);
+  const [activePlayer, setaActivePlayer] = useState<Player>("player1");
+
   const [introModalType, setIntroModalType] = useState<"start" | "finish">(
     "start"
   );
+
   const [cats, setCats] = useState<CatData[]>([]);
   const [activeCardSelection, setActiveCardSelection] = useState<Array<string>>(
     []
@@ -23,16 +27,18 @@ const Board = () => {
   const [resetSelection, setResetSelection] = useState(false);
   const [isBoardDisabled, setIsBoardDisabled] = useState(false);
 
-  const { gameScore, dispatch } = useGameScore();
-  const [activePlayer, setaActivePlayer] = useState<Player>("player1");
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cardDeck = useMemo(() => cardsConstructor(cats), [cats, showBoard]);
   const shuffledDeck = useRef<CardDeck>([]);
 
+  const { gameScore, dispatch } = useGameScore();
+
   const shuffleCards = useCallback(() => {
     shuffledDeck.current = shuffle(cardDeck);
   }, [cats]);
+
+  const dispatchType =
+    activePlayer === "player1" ? "update_player_one" : "update_player_two";
 
   const handlePlayerSwitch = () => {
     if (activePlayer === "player1") {
@@ -41,9 +47,6 @@ const Board = () => {
       setaActivePlayer("player1");
     }
   };
-
-  const dispatchType =
-    activePlayer === "player1" ? "update_player_one" : "update_player_two";
 
   const handleCardPush = (id: string) => {
     setActiveCardSelection((prev) => [...prev, id]);
@@ -86,22 +89,20 @@ const Board = () => {
     });
 
     handleResetSelection();
-    handlePlayerSwitch();
+
+    if (gameType === "two-player") {
+      handlePlayerSwitch();
+    }
   };
 
-  const handleStartGame = () => {
+  const handleStartGame = (gameType: GameType) => {
+    setGameType(gameType);
+
     if (introModalType === "finish") {
       handleRestartGame();
     }
     shuffleCards();
     setShowBoard(true);
-  };
-
-  const handleFinishGame = () => {
-    if (cardsWithPair.length === 20) {
-      setShowBoard(false);
-      setIntroModalType("finish");
-    }
   };
 
   const handleRestartGame = () => {
@@ -110,6 +111,13 @@ const Board = () => {
     setCardsWithPair([]);
     setShowBoard(true);
     shuffleCards();
+  };
+
+  const handleFinishGame = () => {
+    if (cardsWithPair.length === 20) {
+      setShowBoard(false);
+      setIntroModalType("finish");
+    }
   };
 
   useEffect(() => {
@@ -154,7 +162,7 @@ const Board = () => {
           <Score
             score={gameScore}
             activePlayer={activePlayer}
-            gameType="two-player"
+            gameType={gameType}
           />
         </>
       ) : null}
