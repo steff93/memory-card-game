@@ -29,3 +29,5 @@ export type GameScore = {
     readonly moves: number;
   };
 };
+
+export type GameType = "single" | "two-player";

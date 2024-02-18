@@ -151,7 +151,11 @@ const Board = () => {
             pushCardId={handleCardPush}
             resetSelection={resetSelection}
           />
-          <Score score={gameScore} />
+          <Score
+            score={gameScore}
+            activePlayer={activePlayer}
+            gameType="two-player"
+          />
         </>
       ) : null}
     </div>
