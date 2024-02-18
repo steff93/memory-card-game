@@ -67,26 +67,32 @@ const IntroModal = ({
     return (
       <>
         {gameType === "single" ? (
-          <div className="game-score"> Total Moves: {score?.player1.moves}</div>
+          <h3 className="game-score">Total Moves: {score?.player1.moves}</h3>
         ) : (
-          <div className="game-score">
+          <h3 className="game-score">
             {getWinnerScore().player} wins with {getWinnerScore().pairs} pairs
             and {getWinnerScore().moves} moves
-          </div>
+          </h3>
         )}
 
-        <button className="restart-game" onClick={handleSingleGameStart}>
-          Restart Single Player Game
-        </button>
-        <button className="restart-game" onClick={handleTwoPlayerGameStart}>
-          Restart Two Player Game
-        </button>
+        <div className="start-game-actions">
+          <button className="start-game" onClick={handleSingleGameStart}>
+            Restart Single Player Game
+          </button>
+          <button className="start-game" onClick={handleTwoPlayerGameStart}>
+            Restart Two Player Game
+          </button>
+        </div>
       </>
     );
   };
 
   return (
-    <div className="intro-modal">
+    <div
+      className={`intro-modal ${
+        type === "finish" ? "intro-modal--finish" : ""
+      }`}
+    >
       {type === "start" ? renderStartGameModal() : renderFinishGameModal()}
     </div>
   );

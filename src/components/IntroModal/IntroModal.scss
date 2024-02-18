@@ -3,8 +3,21 @@
   justify-content: center;
   align-items: center;
 
+  &--finish {
+    flex-direction: column;
+  }
+
   .game-score {
-    margin-right: 50px;
+    margin-bottom: 50px;
     text-transform: uppercase;
+  }
+
+  .start-game {
+    padding: 30px 55px;
+    text-transform: uppercase;
+
+    &:first-of-type {
+      margin-right: 50px;
+    }
   }
 }
