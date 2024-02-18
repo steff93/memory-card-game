@@ -171,7 +171,8 @@ const Board = () => {
     <IntroModal
       handleStartGame={handleStartGame}
       type={introModalType}
-      totalMoves={gameScore.player1.moves}
+      score={gameScore}
+      gameType={gameType}
     />
   );
 };
